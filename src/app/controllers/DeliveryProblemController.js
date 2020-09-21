@@ -18,6 +18,17 @@ class DeliveryProblemController {
     return res.json(deliveryProblems);
   }
 
+  async showById(req, res) {
+    const { id } = req.params;
+    const problem = await DeliveryProblem.findByPk(id);
+
+    if (!problem) {
+      return res.status(400).json({ error: 'Problem does not match.' });
+    }
+
+    return res.json(problem);
+  }
+
   async show(req, res) {
     const { id } = req.params;
 
