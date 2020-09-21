@@ -75,8 +75,7 @@ class DeliveryProblemController {
 
     const orderId = problemExists.delivery_id;
 
-    const order = await Order.findOne({
-      where: { id: orderId, canceled_at: null },
+    const order = await Order.findByPk(orderId, {
       include: [
         { model: Recipient, as: 'recipient' },
         { model: Deliveryman, as: 'deliveryman' },
