@@ -93,6 +93,20 @@ class RecepientController {
 
     return res.json(updatedRecipient);
   }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    const recipient = await Recipient.findByPk(id);
+
+    if (!recipient) {
+      return res.status(400).json({ error: 'recipient does not match' });
+    }
+
+    await recipient.destroy();
+
+    return res.json({ done: 'recipient was deleted' });
+  }
 }
 
 export default new RecepientController();
