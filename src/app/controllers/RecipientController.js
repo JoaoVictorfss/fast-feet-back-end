@@ -2,10 +2,32 @@ import * as Yup from 'yup';
 import Recipient from '../models/recipient';
 
 class RecepientController {
+  // show by name or all
   async index(req, res) {
-    const recipients = await Recipient.findAll();
-
+    const { name } = req.query;
+    let recipients;
+    if (name) {
+      recipients = await Recipient.findAll({
+        where: { name },
+      });
+      if (!recipients) {
+        return res.status(400).json({ error: 'recipient does not match' });
+      }
+    } else {
+      recipients = await Recipient.findAll();
+    }
     return res.json(recipients);
+  }
+
+  // show by id
+  async showById(req, res) {
+    const { id } = req.params;
+    const recipient = await Recipient.findByPk(id);
+    if (!recipient) {
+      return res.status(400).json({ error: 'recipient does not match' });
+    }
+
+    return res.json(recipient);
   }
 
   async store(req, res) {
